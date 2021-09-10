@@ -13,7 +13,7 @@ namespace BattleSmithAPI.Models
         public int Price { get; set; }
 
         [ForeignKey("Category")]
-        public string Category { get; set; }
-        public Category Category1 { get; set; }
+        public string CategoryId { get; set; }
+        public Category Category { get; set; }
     }
 }

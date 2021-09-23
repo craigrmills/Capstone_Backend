@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.fields import related
 
 # Create your models here.
 
@@ -84,3 +85,34 @@ class ShippingAddress(models.Model):
 
     def __str__(self):
         return str(self.address)
+
+
+class Faction(models.Model):
+    name = models.CharField(max_length=200, null=True, blank=True)
+    numPlayed = models.IntegerField(null=True, blank=True, default=0)
+    winRate = models.IntegerField(null=True, blank=True, default=0)
+    _id = models.AutoField(primary_key=True, editable=False)
+
+    def __str__(self):
+        return str(self.name)
+
+
+class Game(models.Model):
+    player1 = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, related_name="player1")
+    player2 = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, related_name="player2")
+    p1Faction = models.ForeignKey(
+        Faction, on_delete=models.SET_NULL, null=True, related_name="p1Faction")
+    p2Faction = models.ForeignKey(
+        Faction, on_delete=models.SET_NULL, null=True, related_name="p2Faction")
+    p1Score = models.IntegerField(null=True, blank=True, default=0)
+    p2Score = models.IntegerField(null=True, blank=True, default=0)
+    loser = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, related_name="winner")
+    winner = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, related_name="loser")
+    _id = models.AutoField(primary_key=True, editable=False)
+
+    def __str__(self):
+        return str(self._id)
